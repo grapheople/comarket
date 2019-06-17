@@ -1,0 +1,41 @@
+spring:
+  profiles:
+    active: local
+
+devHost: localhost:3306
+devDatabase: comarket
+devUser: grapheople
+devPwd: grapheople
+ddlAuto: none
+
+---
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show-sql: true
+        physical_naming_strategy: com.makers.core.config.jpa.JpaPhysicalNamingStrategy
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        ddl-auto: ${ddlAuto}
+        id:
+          new_generator_mappings: false
+      hbm2ddl:
+        auto: ${ddlAuto}
+
+datasource:
+  url: jdbc:mysql://${devHost}:3306/${devDatabase}?autoReconnect=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&useAffectedRows=true&rewriteBatchedStatements=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=Asia/Seoul
+  username: ${devUser}
+  password: ${devPwd}
+  driverClassName: com.mysql.cj.jdbc.Driver
+  initialSize: 8
+  maxActive: 20
+  maxIdle: -1
+  minIdle: 6
+  maxWaitMillis: 3000
+  testOnBorrow: true
+  testOnReturn: false
+  testWhileIdle: true
+  timeBetweenEvictionRunsMillis: 600000
+  minEvictableIdleTimeMillis: -1
+  softMinEvictableIdleTimeMillis: 300000
+

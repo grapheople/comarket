@@ -4,12 +4,24 @@ spring:
 
 devHost: localhost:3306
 devDatabase: comarket
-devUser: grapheople
-devPwd: grapheople
+devUser: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
+devPwd: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
 ddlAuto: none
 
 ---
 spring:
+  mail:
+    host: smtp.gmail.com
+    username: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
+    password: ENC(X0FxUISMet+c27+xXAc+kEUGkQp+BB/Y091abr8u2v6AWrVsF+D7Ig==)
+    properties:
+      mail:
+        smtp:
+          port: 587
+          auth: true
+          starttls:
+            enable: true
+            required: true
   jpa:
     properties:
       hibernate:
@@ -38,4 +50,8 @@ datasource:
   timeBetweenEvictionRunsMillis: 600000
   minEvictableIdleTimeMillis: -1
   softMinEvictableIdleTimeMillis: 300000
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
 

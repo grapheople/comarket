@@ -6,7 +6,7 @@ devHost: localhost:3306
 devDatabase: comarket
 devUser: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
 devPwd: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
-ddlAuto: none
+ddlAuto: create-drop
 
 ---
 spring:
@@ -33,6 +33,7 @@ spring:
           new_generator_mappings: false
       hbm2ddl:
         auto: ${ddlAuto}
+    generate-ddl: true
 
 datasource:
   url: jdbc:mysql://${devHost}/${devDatabase}?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&useAffectedRows=true&rewriteBatchedStatements=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=Asia/Seoul

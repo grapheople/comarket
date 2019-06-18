@@ -22,15 +22,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class SwaggerConfig {
     @Bean
     public Docket adminApi() {
-        return getDocket("admin-api", "/admin/**");
-    }
-    @Bean
-    public Docket internalApi() {
-        return getDocket("internal-api", "/internal/**");
-    }
-    @Bean
-    public Docket frontApi() {
-        return getDocket("front-api", "/front/**");
+        return getDocket("auth-api", "/api/**");
     }
 
     private Docket getDocket(String groupName, String pathPattern) {
@@ -44,16 +36,6 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(true);
 
-        if(0 == pathPattern.compareTo("/internal/**")){
-            docket.globalOperationParameters(
-                    newArrayList(new ParameterBuilder()
-                            .name("X-INTERNAL-API-KEY")
-                            .description("API Key")
-                            .modelRef(new ModelRef("string"))
-                            .parameterType("header")
-                            .required(true)
-                            .build()));
-        }
         return docket;
     }
     private ApiInfo getApiInfo() {

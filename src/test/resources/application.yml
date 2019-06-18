@@ -4,17 +4,29 @@ spring:
 
 devHost: localhost:3306
 devDatabase: comarket
-devUser: grapheople
-devPwd: grapheople
+devUser: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
+devPwd: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
 ddlAuto: none
 
 ---
 spring:
+  mail:
+    host: smtp.gmail.com
+    username: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
+    password: ENC(X0FxUISMet+c27+xXAc+kEUGkQp+BB/Y091abr8u2v6AWrVsF+D7Ig==)
+    properties:
+      mail:
+        smtp:
+          port: 587
+          auth: true
+          starttls:
+            enable: true
+            required: true
   jpa:
     properties:
       hibernate:
         show-sql: true
-        physical_naming_strategy: com.makers.core.config.jpa.JpaPhysicalNamingStrategy
+        physical_naming_strategy: com.grapheople.comarket.config.jpa.JpaPhysicalNamingStrategy
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         ddl-auto: ${ddlAuto}
         id:
@@ -23,7 +35,7 @@ spring:
         auto: ${ddlAuto}
 
 datasource:
-  url: jdbc:mysql://${devHost}:3306/${devDatabase}?autoReconnect=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&useAffectedRows=true&rewriteBatchedStatements=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=Asia/Seoul
+  url: jdbc:mysql://${devHost}/${devDatabase}?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&useAffectedRows=true&rewriteBatchedStatements=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=Asia/Seoul
   username: ${devUser}
   password: ${devPwd}
   driverClassName: com.mysql.cj.jdbc.Driver
@@ -39,3 +51,6 @@ datasource:
   minEvictableIdleTimeMillis: -1
   softMinEvictableIdleTimeMillis: 300000
 
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

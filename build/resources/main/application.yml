@@ -2,12 +2,6 @@ spring:
   profiles:
     active: local
 
-devHost: localhost:3306
-devDatabase: comarket
-devUser: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
-devPwd: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
-ddlAuto: create-drop
-
 ---
 spring:
   mail:
@@ -23,36 +17,33 @@ spring:
             enable: true
             required: true
   jpa:
-    properties:
-      hibernate:
-        show-sql: true
-        physical_naming_strategy: com.grapheople.comarket.config.jpa.JpaPhysicalNamingStrategy
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-        ddl-auto: ${ddlAuto}
-        id:
-          new_generator_mappings: false
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      show_sql: true
       hbm2ddl:
-        auto: ${ddlAuto}
-    generate-ddl: true
+        auto: create-drop
+      naming:
+        physical-strategy: com.grapheople.comarket.config.jpa.JpaPhysicalNamingStrategy
 
-datasource:
-  url: jdbc:mysql://${devHost}/${devDatabase}?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&useAffectedRows=true&rewriteBatchedStatements=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=Asia/Seoul
-  username: ${devUser}
-  password: ${devPwd}
-  driverClassName: com.mysql.cj.jdbc.Driver
-  initialSize: 8
-  maxActive: 20
-  maxIdle: -1
-  minIdle: 6
-  maxWaitMillis: 3000
-  testOnBorrow: true
-  testOnReturn: false
-  testWhileIdle: true
-  timeBetweenEvictionRunsMillis: 600000
-  minEvictableIdleTimeMillis: -1
-  softMinEvictableIdleTimeMillis: 300000
+
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:3306/comarket?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&useAffectedRows=true&rewriteBatchedStatements=true&useLegacyDatetimeCode=false&useSSL=false&serverTimezone=Asia/Seoul
+      username: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
+      password: ENC(7qCN+Qamt7gEaZM9Gc84Nd31Cw8mBIpgLhdiItlzDizcciEflviQXA==)
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
 
+info: true
+logging:
+  level:
+    root: INFO
+    org.springframework.boot.autoconfigure.logging: INFO
+    org.springframework.web.client: ${debugLevel}
+    org.hibernate: ${debugLevel}
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p - %logger{39} : %m%n"
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(-){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"

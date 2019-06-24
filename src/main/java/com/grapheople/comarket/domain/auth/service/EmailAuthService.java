@@ -28,7 +28,7 @@ public class EmailAuthService {
      */
     @Transactional
     public EmailAuth createEmailAuth(String email) {
-        emailAuthRepository.findByEmail(email).ifPresent(emailAuth -> {
+        emailAuthRepository.findByEmailAndAuthAtIsNotNull(email).ifPresent(emailAuth -> {
             if(emailAuth.getAuthAt() != null) throw new EmailAuthException(40001, "이미 인증된 사용자입니다.");
             emailAuthRepository.delete(emailAuth);
             emailAuthRepository.flush();
@@ -48,16 +48,12 @@ public class EmailAuthService {
      */
     @Transactional
     public void authEmail(String email, String authCode) {
-        EmailAuth emailAuth = emailAuthRepository.findByEmail(email).orElseThrow(() -> new EmailAuthException(40002, "존재하지 않는 메일입니다."));
+        EmailAuth emailAuth = emailAuthRepository.findByEmailAndAuthAtIsNotNull(email).orElseThrow(() -> new EmailAuthException(40002, "존재하지 않는 메일입니다."));
         if (Duration.between(emailAuth.getMailSendAt(), LocalDateTime.now()).getSeconds() > 600) throw new EmailAuthException(40003, "인증 시간이 초과되었습니다.");
-        System.out.println(emailAuth.getAuthCode());
-        System.out.println(authCode);
         if(!emailAuth.getAuthCode().equals(authCode)) throw new EmailAuthException(40004, "인증 코드가 불일치합니다.");
         emailAuth.setAuthAt(LocalDateTime.now());
-    }
 
-    public void resetEmailAuth(String email) {
-        emailAuthRepository.findByEmail(email).ifPresent(emailAuth -> emailAuthRepository.delete(emailAuth));
+        //TODO: 메일 인증 후 사용자 계정 생성
     }
 
 

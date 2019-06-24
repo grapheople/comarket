@@ -42,8 +42,8 @@ logging:
   level:
     root: INFO
     org.springframework.boot.autoconfigure.logging: INFO
-    org.springframework.web.client: ${debugLevel}
-    org.hibernate: ${debugLevel}
+    org.springframework.web.client: DEBUG
+    org.hibernate: DEBUG
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5p - %logger{39} : %m%n"
     console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(-){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"

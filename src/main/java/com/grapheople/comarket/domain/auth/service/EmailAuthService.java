@@ -44,16 +44,15 @@ public class EmailAuthService {
      * 인증 요청을 처리한다
      * @param email 사용자 이메일
      * @param authCode 이메일 링크에 포함된 인증코드
-     * @return
+     * @return 인증된 엔티티 ID
      */
     @Transactional
-    public void authEmail(String email, String authCode) {
+    public EmailAuth authEmail(String email, String authCode) {
         EmailAuth emailAuth = emailAuthRepository.findByEmailAndAuthAtIsNotNull(email).orElseThrow(() -> new EmailAuthException(40002, "존재하지 않는 메일입니다."));
         if (Duration.between(emailAuth.getMailSendAt(), LocalDateTime.now()).getSeconds() > 600) throw new EmailAuthException(40003, "인증 시간이 초과되었습니다.");
         if(!emailAuth.getAuthCode().equals(authCode)) throw new EmailAuthException(40004, "인증 코드가 불일치합니다.");
         emailAuth.setAuthAt(LocalDateTime.now());
-
-        //TODO: 메일 인증 후 사용자 계정 생성
+        return emailAuthRepository.save(emailAuth);
     }
 
 

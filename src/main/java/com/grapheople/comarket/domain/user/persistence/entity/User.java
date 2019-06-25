@@ -21,13 +21,12 @@ public class User {
     @Column(insertable = false, updatable = false, nullable = false, length = 20)
     Long id;
 
-    @Column(nullable = false, length = 15) // length는 바이트가아닌 글자수를 의미한다.
+    @Column(length = 15, unique = true) // length는 바이트가아닌 글자수를 의미한다.
     String accountName;
+    @Column(length = 15, unique = true)
     String nickName;
     String profileImageUrl;
-    String emailAuthId;
-
-    @Column(nullable = false)
+    Long emailAuthId;
     String password;
 
     LocalDateTime createdAt;

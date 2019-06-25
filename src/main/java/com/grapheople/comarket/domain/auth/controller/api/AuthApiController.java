@@ -1,9 +1,12 @@
 package com.grapheople.comarket.domain.auth.controller.api;
 
+import com.google.common.base.Strings;
 import com.grapheople.comarket.common.service.EmailService;
 import com.grapheople.comarket.common.wrapper.ResultResponse;
 import com.grapheople.comarket.domain.auth.persistence.entity.EmailAuth;
 import com.grapheople.comarket.domain.auth.service.EmailAuthService;
+import com.grapheople.comarket.domain.user.persistence.entity.User;
+import com.grapheople.comarket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 public class AuthApiController {
     private final EmailService emailService;
     private final EmailAuthService emailAuthService;
+    private final UserService userService;
 
     @PostMapping("email")
     public ResultResponse<Boolean> createEmailAuth(@RequestParam String email) throws Exception{
@@ -40,8 +44,15 @@ public class AuthApiController {
     }
 
     @GetMapping("email/verify")
-    public ResultResponse verifyEmailAuth(@RequestParam String email, @RequestParam String authCode) {
-        emailAuthService.authEmail(email, authCode);
-        return new ResultResponse();
+    public ResultResponse<Long> verifyEmailAuth(@RequestParam String email, @RequestParam String authCode, @RequestParam(required = false) String accountName) {
+        EmailAuth emailAuth = emailAuthService.authEmail(email, authCode);
+        if (Strings.isNullOrEmpty(accountName)) {
+            User createdUser = userService.createUser(emailAuth);
+            return new ResultResponse<>(createdUser.getId());
+        }
+        else {
+            User updatedUser = userService.updateEmailAuth(emailAuth, accountName);
+            return new ResultResponse<>(updatedUser.getId());
+        }
     }
 }

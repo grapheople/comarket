@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -26,11 +27,10 @@ public class AuthApiController {
     private final UserService userService;
 
     @PostMapping("email")
-    public ResultResponse<Boolean> createEmailAuth(@RequestParam String email) throws Exception{
+    public ResultResponse createEmailAuth(@RequestParam String email) throws UnsupportedEncodingException {
         emailService.validateEmail(email);
         EmailAuth savedEmailAuth = emailAuthService.createEmailAuth(email);
         String authCode = savedEmailAuth.getAuthCode();
-        Long id = savedEmailAuth.getId();
         String subject = "안녕하세요. 코마켓에서 인증코드를 보내드립니다. 인증절차를 완료하세요!";
         String text = new StringBuffer().append("<div><h1>[이메일 인증]</h1>")
                 .append("<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.</p>")
@@ -40,8 +40,11 @@ public class AuthApiController {
                 .append(URLEncoder.encode(authCode, StandardCharsets.UTF_8.toString()))
                 .append("' target='_blank'>이메일 인증 확인</a></div>")
                 .toString();
-        return new ResultResponse<>(emailService.sendSimpleMessage(email, subject, text));
+        emailService.sendSimpleMessage(email, subject, text);
+        return new ResultResponse();
     }
+
+
 
     @GetMapping("email/verify")
     public ResultResponse<Long> verifyEmailAuth(@RequestParam String email, @RequestParam String authCode, @RequestParam(required = false) String accountName) {

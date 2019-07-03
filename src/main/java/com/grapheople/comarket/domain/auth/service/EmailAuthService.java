@@ -5,6 +5,7 @@ import com.grapheople.comarket.domain.auth.persistence.entity.EmailAuth;
 import com.grapheople.comarket.domain.auth.persistence.repository.EmailAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

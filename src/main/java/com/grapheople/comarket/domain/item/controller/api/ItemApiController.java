@@ -1,10 +1,13 @@
 package com.grapheople.comarket.domain.item.controller.api;
 
 import com.grapheople.comarket.common.wrapper.ResultResponse;
+import com.grapheople.comarket.domain.item.model.ItemRequestModel;
 import com.grapheople.comarket.domain.item.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +19,7 @@ public class ItemApiController {
     private final ItemService itemService;
 
     @PostMapping
-    public ResultResponse<Boolean> createItem() {
-
+    public ResultResponse<Boolean> createItem(@ModelAttribute ItemRequestModel itemRequestModel) {
+        return null;
     }
 }

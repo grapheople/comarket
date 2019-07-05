@@ -32,6 +32,7 @@ public class Item {
     String title;
     @Column(length = 500)
     String body;
+    String location;
     Double price;
 
     @OneToMany

@@ -5,6 +5,8 @@ import com.grapheople.comarket.common.service.EmailService;
 import com.grapheople.comarket.common.wrapper.ResultResponse;
 import com.grapheople.comarket.domain.auth.persistence.entity.EmailAuth;
 import com.grapheople.comarket.domain.auth.service.EmailAuthService;
+import com.grapheople.comarket.domain.company.persistence.entity.Company;
+import com.grapheople.comarket.domain.company.persistence.service.CompanyService;
 import com.grapheople.comarket.domain.user.persistence.entity.User;
 import com.grapheople.comarket.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 public class AuthApiController {
     private final EmailService emailService;
     private final EmailAuthService emailAuthService;
+    private final CompanyService companyService;
     private final UserService userService;
 
     @PostMapping("email")
@@ -49,12 +52,13 @@ public class AuthApiController {
     @GetMapping("email/verify")
     public ResultResponse<Long> verifyEmailAuth(@RequestParam String email, @RequestParam String authCode, @RequestParam(required = false) String accountName) {
         EmailAuth emailAuth = emailAuthService.authEmail(email, authCode);
+        Company company = companyService.getCompany(emailAuth.getEmail());
         if (Strings.isNullOrEmpty(accountName)) {
-            User createdUser = userService.createUser(emailAuth);
+            User createdUser = userService.createUser(emailAuth, company);
             return new ResultResponse<>(createdUser.getId());
         }
         else {
-            User updatedUser = userService.updateEmailAuth(emailAuth, accountName);
+            User updatedUser = userService.updateEmailAuth(emailAuth, accountName, company);
             return new ResultResponse<>(updatedUser.getId());
         }
     }

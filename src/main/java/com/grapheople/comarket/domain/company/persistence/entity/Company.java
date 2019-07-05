@@ -1,4 +1,4 @@
-package com.grapheople.comarket.domain.user.persistence.entity;
+package com.grapheople.comarket.domain.company.persistence.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,20 +15,13 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
-public class User {
+public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(insertable = false, updatable = false, nullable = false, length = 20)
     Long id;
-
-    @Column(length = 15, unique = true) // length는 바이트가아닌 글자수를 의미한다.
-    String accountName;
-    @Column(length = 15, unique = true)
-    String nickName;
-    String profileImageUrl;
-    Long emailAuthId;
-    Long companyId;
-    String password;
+    String name;
+    String emailDomain;
 
     LocalDateTime createdAt;
     LocalDateTime updatedAt;
